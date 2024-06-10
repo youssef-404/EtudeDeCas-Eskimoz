@@ -105,14 +105,14 @@ def dataframe_to_sheet(spreadsheet_name,sheet_name,df):
 
 
 
-def example1():
+def example1(spreadsheet_name,sheet_name):
     data = pd.read_csv('data/data_science_phrases.csv')
     data['texte_preprocessed'] = data['texte'].apply(pre_processing)
     most_common_ngrams=analyze_ngrams(data,2,15)
     df = pd.DataFrame(most_common_ngrams, columns=['Ngrams', 'Fréquence'])
-    dataframe_to_sheet("data_science_phrases","Sheet1",df)
+    dataframe_to_sheet(spreadsheet_name,sheet_name,df)
 
-def example2():
+def example2(spreadsheet_name,sheet_name):
     data = pd.read_csv('data/news_headline.csv')
     data['texte_preprocessed'] = data['texte'].apply(pre_processing)
 
@@ -131,10 +131,10 @@ def example2():
 
     merged_df = pd.concat([most_common_ngrams_positive, most_common_ngrams_negative, most_common_ngrams_neutral], axis=1)
 
-    dataframe_to_sheet("data_science_phrases","Sheet1",merged_df)
+    dataframe_to_sheet(spreadsheet_name,sheet_name,merged_df)
 
 
    
 
-example1()
-#example2()
+example1("data_science_phrases","Sheet1")
+#example2("data_science_phrases","Sheet1")
