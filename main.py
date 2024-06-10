@@ -105,11 +105,36 @@ def dataframe_to_sheet(spreadsheet_name,sheet_name,df):
 
 
 
+def example1():
+    data = pd.read_csv('data/data_science_phrases.csv')
+    data['texte_preprocessed'] = data['texte'].apply(pre_processing)
+    most_common_ngrams=analyze_ngrams(data,2,15)
+    df = pd.DataFrame(most_common_ngrams, columns=['Ngrams', 'Fréquence'])
+    dataframe_to_sheet("data_science_phrases","Sheet1",df)
 
-data = pd.read_csv('data/data_science_phrases.csv')
-data['texte_preprocessed'] = data['texte'].apply(pre_processing)
+def example2():
+    data = pd.read_csv('data/news_headline.csv')
+    data['texte_preprocessed'] = data['texte'].apply(pre_processing)
 
-most_common_ngrams=analyze_ngrams(data,2,15)
-df = pd.DataFrame(most_common_ngrams, columns=['Ngrams', 'Fréquence'])
+    df_positive_sentiment = data[data['sentiment']=="positive"]
+    df_negative_sentiment = data[data['sentiment']=="negative"]
+    df_neutral_sentiment = data[data['sentiment']=="neutral"]
 
-dataframe_to_sheet("data_science_phrases","Sheet1",df)
+    most_common_ngrams_positive=analyze_ngrams(df_positive_sentiment,2,15)
+    most_common_ngrams_positive = pd.DataFrame(most_common_ngrams_positive,columns=['Ngrams 1', 'Fréquence dans les titres positifs'])
+
+    most_common_ngrams_negative=analyze_ngrams(df_negative_sentiment,2,15)
+    most_common_ngrams_negative = pd.DataFrame(most_common_ngrams_negative,columns=['Ngrams 2', 'Fréquence dans les titres négatifs'])
+
+    most_common_ngrams_neutral=analyze_ngrams(df_neutral_sentiment,2,15)
+    most_common_ngrams_neutral = pd.DataFrame(most_common_ngrams_neutral,columns=['Ngrams 3', 'Fréquence dans les titres neutres'])
+
+    merged_df = pd.concat([most_common_ngrams_positive, most_common_ngrams_negative, most_common_ngrams_neutral], axis=1)
+
+    dataframe_to_sheet("data_science_phrases","Sheet1",merged_df)
+
+
+   
+
+example1()
+#example2()
